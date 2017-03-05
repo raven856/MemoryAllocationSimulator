@@ -11,8 +11,9 @@ namespace MemoryAllocationConsoleApp
         static int totalFragmentation = 0;
         public static void FirstFit(Job[] jobs, Partition[] partitions)
         {
-             
+           // Queue<Job> queue = new Queue<Job>();
             Console.WriteLine("  Partition Size    Memory Address    Access    Partition Status    Internal Fragmentation");
+            restart:
             foreach (Partition part in partitions)
             {
                 if (part.isBusy == false)
@@ -22,13 +23,17 @@ namespace MemoryAllocationConsoleApp
                         if (job.waiting && (part.size >= job.size))
                         {
                             part.setJob(job);
-                            totalFragmentation += (part.fragmentation);
-                            break;
+                            totalFragmentation += (part.fragmentation);                            
+                            goto restart;
                         }
                     }
-                }   
+                }               
+            }
+            foreach (Partition part in partitions)
+            {
                 part.print();
             }
+            printQueue(jobs);
         }
 
         public static void BestFit(Job[] jobs, Partition[] partitions)
@@ -36,9 +41,9 @@ namespace MemoryAllocationConsoleApp
             int minDifference = 999999;
             Console.WriteLine("  Partition Size    Memory Address    Access    Partition Status    Internal Fragmentation");
             foreach (Job job in jobs)
-            { 
+            {
                 if (job.waiting)
-                {        
+                {
                     //get min difference      
                     foreach (Partition part in partitions)
                     {
@@ -82,40 +87,27 @@ namespace MemoryAllocationConsoleApp
             }
         }
 
-        void printQueue(Job[] list)
+        static void printQueue(Job[] list)
         {
-            foreach(Job job in list)
+            Console.Write("  Waiting List:");
+            foreach (Job job in list)
             {
-                Console.Write(job.name+":"+job.size+"K  ");
+                if (job.waiting)
+                {
+                    Console.Write("  "+job.name + ":" + job.size + "K");
+                }
             }
         }
-
-        static void Main(string[] args)
+       public static void printJobTable(Job[] jobs)
         {
-            //make jobs a queue
-            Job[] jobs = new Job[4];
-            jobs[0] = new Job(1, 30);
-            jobs[1] = new Job(2, 50);
-            jobs[2] = new Job(3, 30);
-            jobs[3] = new Job(4, 25);
-
-            Partition[] partitions = new Partition[4];
-            partitions[0] = new Partition(200, 100);
-            partitions[1] = new Partition(300, 25);
-            partitions[2] = new Partition(325, 25);
-            partitions[3] = new Partition(350, 50);
-
-            Console.WriteLine("   First-Fit Method");
-            Console.WriteLine();
-            FirstFit(jobs, partitions);
-            Console.WriteLine();
-            Console.WriteLine("   Best-Fit Method");
-            Console.WriteLine();
-            BestFit(jobs, partitions);
-            Console.WriteLine();
+            Console.WriteLine("______________");
+            
+            foreach (Job job in jobs)
+            {
+            Console.WriteLine("|              |");
+                Console.WriteLine("|  " + job.name + ":" + job.size + "K    |");
+            }
+            Console.WriteLine("|______________|");
         }
-
-       
-
     }
 }

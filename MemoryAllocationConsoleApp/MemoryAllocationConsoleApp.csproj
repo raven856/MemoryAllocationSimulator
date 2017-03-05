@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Job.cs" />
+    <Compile Include="Runner.cs" />
     <Compile Include="Partition.cs" />
     <Compile Include="AllocationSimulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
