@@ -22,16 +22,12 @@ namespace MemoryAllocationConsoleApp
 
             if (!isDynamicScheme) //fixxed
             {
-                partitions = new Partition[partitionCount];
-                //make partition objects in partition array
+                partitions = new Partition[partitionCount]; //make partition objects in partition array
                 for (int i = 0; i < partitionCount; i++)
                 {
                     partitions[i] = new Partition(((i+1)*50), eachSize); //address and size
                 }
-
             }
-
         }
-
     }
 }

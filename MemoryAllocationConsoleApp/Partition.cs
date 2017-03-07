@@ -52,12 +52,19 @@ namespace MemoryAllocationConsoleApp
 
         public void print()
         {
-            if (this.isBusy) {
+            if (this.isBusy && address < 100) {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-                Console.WriteLine("       "+size.ToString() + "K             " + address.ToString() + "K "
+                Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "K             "
                     + job.name + "           "+"Busy                "+this.fragmentationToString()+"  ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-            } else
+            } else if (this.isBusy)
+            {
+                Console.WriteLine("----------------------------------------------------------------------------------------------");
+                Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "K            "
+                    + job.name + "           " + "Busy                " + this.fragmentationToString() + "  ");
+                Console.WriteLine("----------------------------------------------------------------------------------------------");
+            }
+            else
             {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
                 Console.WriteLine("       "+size.ToString() + "K             " + address.ToString() + "K            " +
