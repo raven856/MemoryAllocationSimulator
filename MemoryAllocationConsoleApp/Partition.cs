@@ -36,7 +36,13 @@ namespace MemoryAllocationConsoleApp
             isBusy = true;
             fragmentation = size - job.size;
         }
-        public string getFragmentation()
+        public void completeTask()
+        {
+            job = null;
+            isBusy = false;
+            fragmentation = 0;
+        }
+        public string fragmentationToString()
         {
             if (fragmentation == 0)
             {
@@ -48,12 +54,14 @@ namespace MemoryAllocationConsoleApp
         {
             if (this.isBusy) {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-                Console.WriteLine("       "+size.ToString() + "K             " + address.ToString() + "K            " + job.name + "           "+"Busy                "+this.getFragmentation()+"  ");
+                Console.WriteLine("       "+size.ToString() + "K             " + address.ToString() + "K "
+                    + job.name + "           "+"Busy                "+this.fragmentationToString()+"  ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
             } else
             {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-                Console.WriteLine("       "+size.ToString() + "K             " + address.ToString() + "K            " + "    " + "           " + "Free                ");
+                Console.WriteLine("       "+size.ToString() + "K             " + address.ToString() + "K            " +
+                    "    " + "           " + "Free                ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
             }
         }

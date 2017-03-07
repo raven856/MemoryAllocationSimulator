@@ -9,7 +9,8 @@ namespace MemoryAllocationConsoleApp
     class AllocationSimulator
     {
         static int totalFragmentation = 0;
-        public static void FirstFit(Job[] jobs, Partition[] partitions)
+        //public static void FirstFit(Job[] jobs, Partition[] partitions)
+        public static void FirstFit(Queue<Job> jobs, Partition[] partitions)
         {
            // Queue<Job> queue = new Queue<Job>();
             Console.WriteLine("  Partition Size    Memory Address    Access    Partition Status    Internal Fragmentation");
@@ -18,25 +19,27 @@ namespace MemoryAllocationConsoleApp
             {
                 if (part.isBusy == false)
                 {
-                    foreach (Job job in jobs)
+                    //foreach (Job job in jobs)
+                    //try to dequeue job and get it in there (Queue<Job>      
+                    
+                    if (jobs.First().waiting && (part.size >= jobs.First().size))
                     {
-                        if (job.waiting && (part.size >= job.size))
-                        {
-                            part.setJob(job);
-                            totalFragmentation += (part.fragmentation);                            
-                            goto restart;
-                        }
+                        part.setJob(jobs.Dequeue());
+                        totalFragmentation += (part.fragmentation);                            
+                        goto restart;
                     }
+                    
                 }               
             }
             foreach (Partition part in partitions)
             {
                 part.print();
             }
-            printQueue(jobs);
+            printQueue(jobs.ToArray());
         }
 
-        public static void BestFit(Job[] jobs, Partition[] partitions)
+        //public static void BestFit(Job[] jobs, Partition[] partitions)
+        public static void BestFit(Queue<Job> jobs, Partition[] partitions)
         {
             int minDifference = 999999;
             Console.WriteLine("  Partition Size    Memory Address    Access    Partition Status    Internal Fragmentation");

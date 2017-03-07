@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllocationScheme.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Partition.cs" />
