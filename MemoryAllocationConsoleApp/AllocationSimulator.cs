@@ -10,12 +10,12 @@ namespace MemoryAllocationConsoleApp
     {
         static int totalFragmentation = 0;
         //public static void FirstFit(Job[] jobs, Partition[] partitions)
-        public static void FirstFit(Queue<Job> jobs, Partition[] partitions)
+        public static void FirstFit(Queue<Job> jobs, FixedPartition[] partitions)
         {
            // Queue<Job> queue = new Queue<Job>();
             Console.WriteLine("  Partition Size    Memory Address    Access    Partition Status    Internal Fragmentation");
             restart:
-            foreach (Partition part in partitions)
+            foreach (FixedPartition part in partitions)
             {
                 if (part.isBusy == false)
                 {      
@@ -27,17 +27,17 @@ namespace MemoryAllocationConsoleApp
                     }
                 }               
             }
-            foreach (Partition part in partitions)
+            foreach (FixedPartition part in partitions)
             {
                 part.print();
             }
             printQueue(jobs.ToArray());
         }
 
-        public static void offerBestFit(Queue<Job> jobs, Partition[] partitions)
+        public static void offerBestFit(Queue<Job> jobs, FixedPartition[] partitions)
         {
             int minDifference = 999999;
-            foreach (Partition part in partitions) //get min difference    
+            foreach (FixedPartition part in partitions) //get min difference    
             {
                 if (part.isBusy == false)
                 {
@@ -48,7 +48,7 @@ namespace MemoryAllocationConsoleApp
                     }
                 }
             }
-            foreach (Partition part in partitions) //assign job to best fit part
+            foreach (FixedPartition part in partitions) //assign job to best fit part
             {
                 if (part.isBusy == false)
                 {
@@ -62,8 +62,36 @@ namespace MemoryAllocationConsoleApp
                 }
             }
         }
+        private static void offerWorstFit(Queue<Job> jobs, FixedPartition[] partitions)
+        {
+            int maxDifference = 0;
+            foreach (FixedPartition part in partitions) //get min difference    
+            {
+                if (part.isBusy == false)
+                {
+                    int dif = (part.size - jobs.First().size);
+                    if (((dif) > maxDifference) && (dif >= 0))
+                    {
+                        maxDifference = dif;
+                    }
+                }
+            }
+            foreach (FixedPartition part in partitions) //assign job to best fit part
+            {
+                if (part.isBusy == false)
+                {
+                    int dif = (part.size - jobs.First().size);
+                    if ((dif) == maxDifference)
+                    {
+                        part.setJob(jobs.Dequeue());
+                        totalFragmentation += (part.fragmentation);
+                        break;
+                    }
+                }
+            }
+        }
 
-        public static void BestFit(Queue<Job> jobs, Partition[] partitions)
+        public static void BestFit(Queue<Job> jobs, FixedPartition[] partitions)
         {
             Console.WriteLine("  Partition Size    Memory Address    Access    Partition Status    Internal Fragmentation");
             for(int i = 0; i < partitions.Count(); i++)
@@ -73,8 +101,18 @@ namespace MemoryAllocationConsoleApp
             }
             printQueue(jobs.ToArray());
         }
+        public static void WorstFit(Queue<Job> jobs, FixedPartition[] partitions)
+        {
+            Console.WriteLine("  Partition Size    Memory Address    Access    Partition Status    Internal Fragmentation");
+            for (int i = 0; i < partitions.Count(); i++)
+            {
+                offerWorstFit(jobs, partitions);
+                partitions[i].print();
+            }
+            printQueue(jobs.ToArray());
+        }
 
-        static void printQueue(Job[] list)
+        public static void printQueue(Job[] list)
         {
             Console.Write("  Waiting List:");
             foreach (Job job in list)
@@ -97,5 +135,28 @@ namespace MemoryAllocationConsoleApp
             }
             Console.WriteLine("|______________|");
         }
+
+        public static void NextFit(Queue<Job> jobs, FixedPartition[] partitions)
+        {
+            // Queue<Job> queue = new Queue<Job>();
+            Console.WriteLine("  Partition Size    Memory Address    Access    Partition Status    Internal Fragmentation");
+            foreach (FixedPartition part in partitions)
+            {
+                if (part.isBusy == false)
+                {
+                    if (jobs.First().waiting && (part.size >= jobs.First().size))
+                    {
+                        part.setJob(jobs.Dequeue());
+                        totalFragmentation += (part.fragmentation);
+                    }
+                }
+            }
+            foreach (FixedPartition part in partitions)
+            {
+                part.print();
+            }
+            printQueue(jobs.ToArray());
+        }
+
     }
 }

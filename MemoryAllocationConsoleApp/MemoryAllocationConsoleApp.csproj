@@ -43,10 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AllocationScheme.cs" />
+    <Compile Include="DynamicPartition.cs" />
+    <Compile Include="Memory.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Runner.cs" />
-    <Compile Include="Partition.cs" />
+    <Compile Include="FixedPartition.cs" />
     <Compile Include="AllocationSimulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

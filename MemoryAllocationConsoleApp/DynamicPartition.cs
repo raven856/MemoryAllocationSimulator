@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace MemoryAllocationConsoleApp
 {
-    class Partition
+    class DynamicPartition
     {
+      
         public int address;
         public int size;
-        Job job;
+        public Job job;
         public bool isBusy = false; //free
         public int fragmentation = 0;
 
@@ -19,23 +20,16 @@ namespace MemoryAllocationConsoleApp
         /// </summary>
         /// <param name="aAddress">Memory Address</param>
         /// <param name="aSize">Size of the Partition</param>
-        public Partition(int aAddress, int aSize)
+        public DynamicPartition(int aAddress, int aSize)
         {
             address = aAddress;
             size = aSize;
         }
-            
+
         /// <summary>
         /// Gives a job to the Memory Partition
         /// </summary>
         /// <param name="aJob"></param>
-        public void setJob(Job aJob)
-        {
-            job = aJob;
-            job.waiting = false;
-            isBusy = true;
-            fragmentation = size - job.size;
-        }
         public void completeTask()
         {
             job = null;
@@ -47,17 +41,20 @@ namespace MemoryAllocationConsoleApp
             if (fragmentation == 0)
             {
                 return "None";
-            } else { return fragmentation.ToString(); }
+            }
+            else { return fragmentation.ToString(); }
         }
 
         public void print()
         {
-            if (this.isBusy && address < 100) {
+            if (this.isBusy && address < 100)
+            {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
                 Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "K             "
-                    + job.name + "           "+"Busy                "+this.fragmentationToString()+"  ");
+                    + job.name + "           " + "Busy                " + this.fragmentationToString() + "  ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-            } else if (this.isBusy)
+            }
+            else if (this.isBusy)
             {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
                 Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "K            "
@@ -67,7 +64,7 @@ namespace MemoryAllocationConsoleApp
             else
             {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-                Console.WriteLine("       "+size.ToString() + "K             " + address.ToString() + "K            " +
+                Console.WriteLine("       " + size.ToString() + "K             " + address.ToString() + "K            " +
                     "    " + "           " + "Free                ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
             }

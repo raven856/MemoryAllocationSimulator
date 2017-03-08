@@ -21,9 +21,9 @@ namespace MemoryAllocationConsoleApp
             jobs.Enqueue(new Job(1, 10));
             jobs.Enqueue(new Job(2, 20));
             jobs.Enqueue(new Job(3, 30));
-            jobs.Enqueue(new Job(4, 40));      
+            jobs.Enqueue(new Job(4, 40));
 
-            AllocationScheme fixedScheme = new AllocationScheme(false, 3, 50);
+            Memory fixedScheme = new Memory(false, 3, 50);
 
             AllocationSimulator.printJobTable(jobs.ToArray());
             Console.WriteLine();
