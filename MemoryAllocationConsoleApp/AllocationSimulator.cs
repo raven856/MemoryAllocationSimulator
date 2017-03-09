@@ -9,7 +9,18 @@ namespace MemoryAllocationConsoleApp
     class AllocationSimulator
     {
         static int totalFragmentation = 0;
-        //public static void FirstFit(Job[] jobs, Partition[] partitions)
+
+        public static void offerJobs(ref Queue<Job> jobs, DynamicMemory scheme)
+        {
+            for (int i = 0; i < jobs.Count; i++)
+            {
+                if (scheme.offer(jobs.First()) == true) //successfully loaded job to memory 
+                {
+                    jobs.Dequeue();
+                }
+            }
+        }
+
         public static void FirstFit(Queue<Job> jobs, FixedPartition[] partitions)
         {
            // Queue<Job> queue = new Queue<Job>();
@@ -122,6 +133,7 @@ namespace MemoryAllocationConsoleApp
                     Console.Write("  "+job.name + ":" + job.size + "K"); 
                 }
             }
+            Console.WriteLine();
             Console.WriteLine();
         }
        public static void printJobTable(Job[] jobs)

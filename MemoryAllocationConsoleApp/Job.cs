@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MemoryAllocationConsoleApp
 {
-    class Job
+    public class Job
     {
         public int size;
-        int number;
+        public int number;
         public string name;
         public bool waiting = true;
 

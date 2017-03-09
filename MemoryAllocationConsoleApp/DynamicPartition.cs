@@ -6,66 +6,50 @@ using System.Threading.Tasks;
 
 namespace MemoryAllocationConsoleApp
 {
-    class DynamicPartition
+    public class DynamicPartition
     {
       
         public int address;
         public int size;
         public Job job;
-        public bool isBusy = false; //free
-        public int fragmentation = 0;
+        public bool isFree; //free
 
         /// <summary>
-        /// Constructor for Memory Partition
+        /// Constructor for Dynamic Memory Partition
         /// </summary>
-        /// <param name="aAddress">Memory Address</param>
-        /// <param name="aSize">Size of the Partition</param>
-        public DynamicPartition(int aAddress, int aSize)
+        /// <param name="aJobs">job going into memory</param>
+        public DynamicPartition(Job aJob)
         {
-            address = aAddress;
-            size = aSize;
+            job = aJob;
+            size = aJob.size;
+            isFree = false;
         }
 
-        /// <summary>
-        /// Gives a job to the Memory Partition
-        /// </summary>
-        /// <param name="aJob"></param>
         public void completeTask()
         {
-            job = null;
-            isBusy = false;
-            fragmentation = 0;
-        }
-        public string fragmentationToString()
-        {
-            if (fragmentation == 0)
-            {
-                return "None";
-            }
-            else { return fragmentation.ToString(); }
+            isFree = true;
         }
 
         public void print()
         {
-            if (this.isBusy && address < 100)
+            if (!isFree)
             {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
                 Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "K             "
-                    + job.name + "           " + "Busy                " + this.fragmentationToString() + "  ");
+                    + job.name + "           " + "Busy                  ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-            }
-            else if (this.isBusy)
+            }/*
+            else if (!isFree)
             {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
                 Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "K            "
-                    + job.name + "           " + "Busy                " + this.fragmentationToString() + "  ");
+                    + job.name + "           " + "Busy                  ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-            }
-            else
+            }*/
+            else //is free   show external fragmentation
             {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-                Console.WriteLine("       " + size.ToString() + "K             " + address.ToString() + "K            " +
-                    "    " + "           " + "Free                ");
+                Console.WriteLine("       " + size.ToString() + "K     " + "Free               External Fragmentation!: "+size.ToString()+"K");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
             }
         }
