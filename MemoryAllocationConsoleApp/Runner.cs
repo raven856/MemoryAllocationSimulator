@@ -8,15 +8,21 @@ namespace MemoryAllocationConsoleApp
 {
     class Runner
     {
-        static void PromptJobCompletion(ref FixedPartition[] partitions)
+        static bool PromptJobCompletion(ref FixedPartition[] partitions)
         {
-            Console.WriteLine("   Enter a job number to have completed");
-            int num = int.Parse(Console.ReadLine());
+            Console.WriteLine("   Enter a job number to have completed, or write \"quit\"");
+            string str = Console.ReadLine();
+            if (str == "quit")
+            {
+                return false;
+            }
+            int num = int.Parse(str);
             partitions[num - 1].completeTask();
+            return true;
         }
         static void PromptCommandsDynamic(ref Queue<Job> jobs, ref DynamicMemory scheme)
         {
-            Console.WriteLine("   Enter a command: \"end job\", \"compact\" or \"load\"");
+            Console.WriteLine("   Enter a command: \"end\", \"compact\", \"load\", or \"quit\"");
             string str = Console.ReadLine();
             if (str == "end")
             {
@@ -24,7 +30,6 @@ namespace MemoryAllocationConsoleApp
                 int num = (int.Parse(Console.ReadLine()));
                 scheme.completeTaskWithJob(num);
                 scheme.printMemory();
-               
             }
             else if (str == "load")
             {
@@ -36,9 +41,13 @@ namespace MemoryAllocationConsoleApp
                 scheme.compact();
                 scheme.printMemory();
             }
+            else if (str == "quit")
+            {
+                return;
+            }
             else
             {
-                Console.WriteLine("unrecongnized command. enter \"end job\", \"compact\" or \"load\"");
+                Console.WriteLine("unrecongnized command. enter \"end\", \"compact\" or \"load\"");
             }
             Console.WriteLine();
             AllocationSimulator.printQueue(jobs.ToArray());
@@ -46,9 +55,8 @@ namespace MemoryAllocationConsoleApp
         }
 
         static void Main(string[] args)
-        {
+        {         
             //Dynamic
-
             Queue<Job> jobs = new Queue<Job>();
             jobs.Enqueue(new Job(1, 10));
             jobs.Enqueue(new Job(2, 20));
@@ -75,8 +83,14 @@ namespace MemoryAllocationConsoleApp
             Console.WriteLine();
             AllocationSimulator.BestFit(jobs, fixedScheme.partitions);
             Console.WriteLine();
-            PromptJobCompletion(ref fixedScheme.partitions);
-            AllocationSimulator.BestFit(jobs, fixedScheme.partitions);
+
+            bool go = true;
+            while (go)
+            {
+                go = PromptJobCompletion(ref fixedScheme.partitions);
+                AllocationSimulator.FirstFit(jobs, fixedScheme.partitions);
+                AllocationSimulator.BestFit(jobs, fixedScheme.partitions);
+            }
         }
     }
 }

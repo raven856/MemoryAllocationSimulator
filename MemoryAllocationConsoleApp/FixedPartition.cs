@@ -54,20 +54,20 @@ namespace MemoryAllocationConsoleApp
         {
             if (this.isBusy && address < 100) {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-                Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "K             "
+                Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "              "
                     + job.name + "           "+"Busy                "+this.fragmentationToString()+"  ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
             } else if (this.isBusy)
             {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-                Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "K            "
+                Console.WriteLine("       " + size.ToString() + "K            " + address.ToString() + "             "
                     + job.name + "           " + "Busy                " + this.fragmentationToString() + "  ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
             }
             else
             {
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-                Console.WriteLine("       "+size.ToString() + "K             " + address.ToString() + "K            " +
+                Console.WriteLine("       "+size.ToString() + "K             " + address.ToString() + "             " +
                     "    " + "           " + "Free                ");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
             }
